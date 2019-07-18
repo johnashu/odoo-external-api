@@ -7,7 +7,7 @@ log.basicConfig(format="%(message)s", level=log.CRITICAL)
 
 
 db = ""
-url = f"https://{db}.dev.odoo.com" # Odoo.sh address
+url = f"https://{db}.dev.odoo.com"  # Odoo.sh address
 username = ''
 password = ''
 
@@ -208,7 +208,7 @@ class ApiConnection:
         if not isinstance(ids, list):
             ids = [ids]
         return self.models.execute_kw(
-            self.db, self.uid, self.password, "{}".format(table), "unlink", [ids]
+            self.db, self.uid, self.password, table, "unlink", [ids]
         )
 
     def check_one_record(self, id, table=current_table):
@@ -217,7 +217,7 @@ class ApiConnection:
             self.db,
             self.uid,
             self.password,
-            "{}".format(table),
+            table,
             "search",
             [[["id", "=", id]]],
         )
