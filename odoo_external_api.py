@@ -6,8 +6,8 @@ import logging as log
 log.basicConfig(format="%(message)s", level=log.CRITICAL)
 
 
-db = "imt-p-master-166492"
-url = f"https://{db}.dev.odoo.com"
+db = ""
+url = f"https://{db}.dev.odoo.com" # Odoo.sh address
 username = ''
 password = ''
 
