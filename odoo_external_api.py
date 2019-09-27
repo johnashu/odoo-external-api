@@ -6,13 +6,12 @@ import logging as log
 log.basicConfig(format="%(message)s", level=log.CRITICAL)
 
 
-db = ""
-url = f"https://{db}.dev.odoo.com"  # Odoo.sh address
+db_name = ""
+url = f"https://{db_name}.dev.odoo.com"  # Odoo.sh address
 username = ''
 password = ''
 
 
-URL = "https://products.intermodaltelematics.com/?id={}"
 current_table = "stock.production.lot"
 
 # 'product.product'
@@ -297,7 +296,7 @@ def login_auth(db=db, username=username, password=password):
 def get_ac(db=None):
     """ returns a connection object from the required database, defaults to master if no other database is passed """
     return login_auth(
-        db=db if db else "imt-p-master-166492", username=username, password=password
+        db=db if db else db_name, username=username, password=password
     )
 
 if __name__ == '__main__':
