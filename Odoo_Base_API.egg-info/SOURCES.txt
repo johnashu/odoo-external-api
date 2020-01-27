@@ -1,0 +1,6 @@
+README.md
+setup.py
+Odoo_Base_API.egg-info/PKG-INFO
+Odoo_Base_API.egg-info/SOURCES.txt
+Odoo_Base_API.egg-info/dependency_links.txt
+Odoo_Base_API.egg-info/top_level.txt

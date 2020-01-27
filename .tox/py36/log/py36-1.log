@@ -1,0 +1,37 @@
+action: py36, msg: getenv
+cwd: C:\Users\John\Documents\GIT\odoo-external-api
+cmd: 'C:\Users\John\Documents\GIT\odoo-external-api\.tox\py36\Scripts\python.EXE' -m pip install -rrequirements.txt
+Collecting lxml (from -r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/88/ce/375cd7d7e2573aef5e6133a0db1d6795b1bea47059e83646220072a7476b/lxml-4.4.2-cp36-cp36m-win_amd64.whl
+Collecting pytest (from -r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/0b/2d/75def2ed660903839bab38a1cadf819726637a0c3c78951de7e67a97a7c3/pytest-5.3.4-py3-none-any.whl (235kB)
+Collecting coverage (from -r requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/99/dd/c20059fc7189b72cb49af5f4584089dc8fd47f69c76861bbe7ed2617063f/coverage-5.0.3-cp36-cp36m-win_amd64.whl (205kB)
+Collecting py>=1.5.0 (from pytest->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/99/8d/21e1767c009211a62a8e3067280bfce76e89c9f876180308515942304d2d/py-1.8.1-py2.py3-none-any.whl
+Collecting importlib-metadata>=0.12; python_version < "3.8" (from pytest->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/d7/31/74dcb59a601b95fce3b0334e8fc9db758f78e43075f22aeb3677dfb19f4c/importlib_metadata-1.4.0-py2.py3-none-any.whl
+Collecting atomicwrites>=1.0; sys_platform == "win32" (from pytest->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/52/90/6155aa926f43f2b2a22b01be7241be3bfd1ceaf7d0b3267213e8127d41f4/atomicwrites-1.3.0-py2.py3-none-any.whl
+Collecting pluggy<1.0,>=0.12 (from pytest->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/a0/28/85c7aa31b80d150b772fbe4a229487bc6644da9ccb7e427dd8cc60cb8a62/pluggy-0.13.1-py2.py3-none-any.whl
+Collecting attrs>=17.4.0 (from pytest->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/a2/db/4313ab3be961f7a763066401fb77f7748373b6094076ae2bda2806988af6/attrs-19.3.0-py2.py3-none-any.whl
+Collecting wcwidth (from pytest->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/58/b4/4850a0ccc6f567cc0ebe7060d20ffd4258b8210efadc259da62dc6ed9c65/wcwidth-0.1.8-py2.py3-none-any.whl
+Collecting more-itertools>=4.0.0 (from pytest->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/bc/e2/3206a70758a21f9878fcf9478282bb68fbc66a5564718f9ed724c3f2bb52/more_itertools-8.1.0-py3-none-any.whl
+Collecting colorama; sys_platform == "win32" (from pytest->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/c9/dc/45cdef1b4d119eb96316b3117e6d5708a08029992b2fee2c143c7a0a5cc5/colorama-0.4.3-py2.py3-none-any.whl
+Collecting packaging (from pytest->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/98/42/87c585dd3b113c775e65fd6b8d9d0a43abe1819c471d7af702d4e01e9b20/packaging-20.1-py2.py3-none-any.whl
+Collecting zipp>=0.5 (from importlib-metadata>=0.12; python_version < "3.8"->pytest->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/be/69/4ac28bf238f287f1677f41392e24d2c4ffafcf11648c23824f5f62ef6ccb/zipp-2.1.0-py3-none-any.whl
+Collecting six (from packaging->pytest->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/65/eb/1f97cb97bfc2390a276969c6fae16075da282f5058082d4cb10c6c5c1dba/six-1.14.0-py2.py3-none-any.whl
+Collecting pyparsing>=2.0.2 (from packaging->pytest->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/5d/bc/1e58593167fade7b544bfe9502a26dc860940a79ab306e651e7f13be68c2/pyparsing-2.4.6-py2.py3-none-any.whl
+Installing collected packages: lxml, py, zipp, importlib-metadata, atomicwrites, pluggy, attrs, wcwidth, more-itertools, colorama, six, pyparsing, packaging, pytest, coverage
+Successfully installed atomicwrites-1.3.0 attrs-19.3.0 colorama-0.4.3 coverage-5.0.3 importlib-metadata-1.4.0 lxml-4.4.2 more-itertools-8.1.0 packaging-20.1 pluggy-0.13.1 py-1.8.1 pyparsing-2.4.6 pytest-5.3.4 six-1.14.0 wcwidth-0.1.8 zipp-2.1.0
+WARNING: You are using pip version 19.2.3, however version 20.0.2 is available.
+You should consider upgrading via the 'python -m pip install --upgrade pip' command.

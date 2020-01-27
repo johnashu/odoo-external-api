@@ -1,30 +1,25 @@
 import sys
-from os.path import join, abspath, pardir
-
-sys.path.append(abspath(pardir))
-sys.path.append(join(abspath(pardir), ".."))
-
-from add_paths import *
 from xmlrpc.client import ServerProxy, ProtocolError, Error
-from os.path import join, abspath, pardir
-from ast import literal_eval
 import logging as log
-
-import pandas as pd
 
 log.basicConfig(format="%(message)s", level=log.INFO)
 
-
-from includes.config.config import (
+from includes.config import (
     url,
     db,
     username,
     password,
-    username_a2m,
-    password_a2m,
 )
 
-from includes.config.magic_numbers import *
+current_table = "stock.production.lot"
+
+# 'product.product'
+# 'sale.order.line'
+# 'sale.order'
+# 'mrp.production'
+# 'mrp.workorder'
+# res.partner'
+# 'purchase.order'
 
 
 URL = "https://products.intermodaltelematics.com/?id={}"
@@ -289,7 +284,7 @@ class OdooBaseApi:
         )
 
     # def ex_sql(self, query=False, queries=False):
-    #     # create a server-side method to run sql.. 
+    #     # create a server-side method to run sql..
     #     return self.run_method(
     #         "run_query",
     #         args=[[]],
@@ -297,19 +292,19 @@ class OdooBaseApi:
     #         table="tools.sql",
     #     )
 
-    def gen_select(self, fields, table, where=''): 
-        query = f"SELECT {fields} FROM {table.replace('.', '_')} {where};"
+    def gen_select(self, fields, table, where=""):
+        query = f"""SELECT {fields} FROM {table.replace('.', '_')} WHERE {where};"""
         print(query)
         return query
 
-    def gen_update(self, field, value, table, where=''):
-        query = f"UPDATE {table.replace('.', '_')} SET {field}='{value}' {where};"
+    def gen_update(self, field, value, table, where=""):
+        query = (
+            f"""UPDATE {table.replace('.', '_')} SET {field}='{value}' WHERE {where};"""
+        )
         print(query)
-        return query        
+        return query
 
-    def gen_delete(self, table, where=''):
-        query = f"DELETE FROM {table.replace('.', '_')} {where};"
+    def gen_delete(self, table, where=""):
+        query = f"""DELETE FROM {table.replace('.', '_')} WHERE {where};"""
         print(query)
-        return query        
-
-
+        return query

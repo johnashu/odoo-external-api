@@ -1,0 +1,17 @@
+action: py36, msg: installpkg
+cwd: C:\Users\John\Documents\GIT\odoo-external-api
+cmd: 'C:\Users\John\Documents\GIT\odoo-external-api\.tox\py36\Scripts\python.EXE' -m pip install --no-deps -U '.tox\.tmp\package\1\Odoo Base API-2019.1.3.zip'
+Processing c:\users\john\documents\git\odoo-external-api\.tox\.tmp\package\1\odoo base api-2019.1.3.zip
+Building wheels for collected packages: Odoo-Base-API
+  Building wheel for Odoo-Base-API (setup.py): started
+  Building wheel for Odoo-Base-API (setup.py): finished with status 'done'
+  Created wheel for Odoo-Base-API: filename=Odoo_Base_API-2019.1.3-cp36-none-any.whl size=1103 sha256=6309e348bdda9c8ad56eba747a5339330c83bdb05fb4a4c09fc35fea1cd839fc
+  Stored in directory: C:\Users\John\AppData\Local\pip\Cache\wheels\3c\6f\cf\82054165336ad131f5e028d787d78ba74045782edfc54e9ea5
+Successfully built Odoo-Base-API
+Installing collected packages: Odoo-Base-API
+  Found existing installation: Odoo-Base-API 2019.1.3
+    Not uninstalling odoo-base-api at c:\users\john\documents\git\odoo-external-api, outside environment C:\Users\John\Documents\GIT\odoo-external-api\.tox\py36
+    Can't uninstall 'Odoo-Base-API'. No files were found to uninstall.
+Successfully installed Odoo-Base-API-2019.1.3
+WARNING: You are using pip version 19.2.3, however version 20.0.2 is available.
+You should consider upgrading via the 'python -m pip install --upgrade pip' command.
