@@ -69,10 +69,10 @@ Alternativley run:
 
 Please aim for 100% coverage.
 
-Name                     Stmts   Miss  Cover   Missing
-------------------------------------------------------
-includes\config.py           4      0   100%
-odoo_external_api.py        81      0   100%
-tests\test_base_api.py      85      0   100%
-------------------------------------------------------
-TOTAL                      170      0   100%
+    Name                     Stmts   Miss  Cover   Missing
+    ------------------------------------------------------
+    includes\config.py           4      0   100%
+    odoo_external_api.py        81      0   100%
+    tests\test_base_api.py      85      0   100%
+    ------------------------------------------------------
+    TOTAL                      170      0   100%
