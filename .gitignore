@@ -87,7 +87,7 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 
 github_keys/
-includes/config/config.py
+includes/config.py
 
 .vs/
 .vscode/
