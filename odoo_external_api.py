@@ -307,7 +307,7 @@ class OdooBaseApi:
         print(query)
         return query        
 
-    def gen_delete(self, field, value, table, where=''):
+    def gen_delete(self, table, where=''):
         query = f"DELETE FROM {table.replace('.', '_')} {where};"
         print(query)
         return query        
