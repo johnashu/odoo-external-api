@@ -1,38 +1,55 @@
 import sys
+from os.path import join, abspath, pardir
+
+sys.path.append(abspath(pardir))
+sys.path.append(join(abspath(pardir), ".."))
+
+from add_paths import *
 from xmlrpc.client import ServerProxy, ProtocolError, Error
 from os.path import join, abspath, pardir
 from ast import literal_eval
 import logging as log
-log.basicConfig(format="%(message)s", level=log.CRITICAL)
+
+import pandas as pd
+
+log.basicConfig(format="%(message)s", level=log.INFO)
 
 
-db_name = ""
-url = f"https://{db_name}.dev.odoo.com"  # Odoo.sh address
-username = ''
-password = ''
+from includes.config.config import (
+    url,
+    db,
+    username,
+    password,
+    username_a2m,
+    password_a2m,
+)
+
+from includes.config.magic_numbers import *
 
 
+URL = "https://products.intermodaltelematics.com/?id={}"
 current_table = "stock.production.lot"
 
 # 'product.product'
 # 'sale.order.line'
 # 'sale.order'
-# mrp.production'
+# 'mrp.production'
 # 'mrp.workorder'
 # res.partner'
-# purchase.order
+# 'purchase.order'
 
 
-class ApiConnection:
+class OdooBaseApi:
     """ Class to communicate with Odoo from the Backend.
         Just a note here to remember to not include None but False in calls 
     """
 
-    def __init__(self, url, db, user, password):
+    def __init__(self, url, db, user, password, table=current_table):
         self.url = url
         self.db = db
         self.user = user
         self.password = password
+        self.table = table
 
         # The xmlrpc/2/common endpoint provides meta-calls which don't require authentication,
         # such as the authentication itself or fetching version information.
@@ -40,7 +57,7 @@ class ApiConnection:
 
         # The second endpoint is xmlrpc/2/object, is used to call methods of odoo models
         # via the execute_kw RPC function.Each call to execute_kw takes the following parameters:
-        # the database to use, a string
+        # the dbase to use, a string
         # the user id (retrieved through authenticate), an integer
         # the user's password, a string
         # the model name, a string
@@ -50,10 +67,11 @@ class ApiConnection:
 
         self.models = ServerProxy(f"{self.url}/xmlrpc/2/object")
 
-    def auth_user(self):
-        """ Autheticate the current user"""
         self.uid = self.common.authenticate(self.db, self.user, self.password, {})
-        return self.uid
+
+        log.info(
+            f"\n\n\tid  ::  ({self.uid})  {self.user}  ::  {self.db}  ::  LOGIN SUCCESSSFUL!!\n\n"
+        )
 
     def check_user_access_rights(
         self, table=current_table, access_type="read", raise_exception=False
@@ -67,6 +85,46 @@ class ApiConnection:
             [access_type],
             {"raise_exception": raise_exception},
         )
+
+    def get_all_ids(self):
+        return self.search_records([], table=self.table)
+
+    def pprint_res(self, d, field=None):
+        """ 
+            Takes in a list of dictionaries (d) 
+            pretty prints the results to the terminal
+        """
+        for x in d:
+            print()
+            print("-" * 100)
+            try:
+                if field:
+                    print(x[field])
+                else:
+                    for k, v in x.items():
+                        print(f"\n\t{k}  ::  {v}")
+            except (KeyError, IndexError, AttributeError) as e:
+                msg = "Nothing to display"
+                return msg
+
+        print()
+        print("-" * 100)
+        print()
+        return True
+
+    def base_execute_kw_parse(self, ids, dictionary=False, field=False, val=False):
+
+        d = {}
+
+        if not dictionary:
+            d[field] = val
+        else:
+            d = dictionary
+
+        if not isinstance(ids, list):
+            ids = [ids]
+
+        return ids, d
 
     def search_records(self, query_list, table=current_table, offset=0, limit=0):
         """ Search will return the ID of the Records found """
@@ -82,8 +140,8 @@ class ApiConnection:
 
     def count_records(self, query_list, table=current_table):
         """  
-        Calling search then search_count (or the other way around) may not yield coherent results         
-        if other users are using the server: stored data could have changed between the calls.
+            Calling search then search_count (or the other way around) may not yield coherent results         
+            if other users are using the server: stored data could have changed between the calls.
         """
         return self.models.execute_kw(
             self.db, self.uid, self.password, table, "search_count", [query_list]
@@ -96,10 +154,9 @@ class ApiConnection:
             # (as returned by search()) and optionally a list of fields to fetch. 
             # By default, it will fetch all the fields the current user can read, 
             # which tends to be a huge amount.
-
-            TODO: Check out error thrown when passing in more than 1 id!!
         """
-        [record] = self.models.execute_kw(
+        ids, _ = self.base_execute_kw_parse(ids)
+        return self.models.execute_kw(
             self.db,
             self.uid,
             self.password,
@@ -108,7 +165,6 @@ class ApiConnection:
             [ids],
             {"fields": fields},
         )
-        return [record]
 
     def list_record_fields(self, table=current_table, attrs=False):
         """ 
@@ -144,8 +200,7 @@ class ApiConnection:
          if that list is not provided it will fetch all fields of matched records)
 
         """
-        # print("Searching and Reading..")  # check logging..
-        # try:
+
         return self.models.execute_kw(
             self.db,
             self.uid,
@@ -155,9 +210,6 @@ class ApiConnection:
             [query_list],
             {"fields": fields, "offset": offset, "limit": limit},
         )
-        # except (ProtocolError, Error):
-        #     print(f'ERROR, {ProtocolError}')
-        #     return False
 
     def create_record(
         self, table=current_table, field=None, val=None, dictionary=False
@@ -167,11 +219,10 @@ class ApiConnection:
             Takes in either a field and value or a dictionary of fields and values
             {'name': "New Partner", "address": "Heaven"}
         """
-        d = {}
-        if not dictionary:
-            d[field] = val
-        else:
-            d = dictionary
+        ids, d = self.base_execute_kw_parse(
+            False, field=field, val=val, dictionary=dictionary
+        )
+
         return self.models.execute_kw(
             self.db, self.uid, self.password, table, "create", [d]
         )
@@ -186,14 +237,10 @@ class ApiConnection:
             {'name': "New Partner", "address": "Heaven"}
 
         """
-        d = {}
-        if not dictionary:
-            d[field] = val
-        else:
-            d = dictionary
+        ids, d = self.base_execute_kw_parse(
+            ids, field=field, val=val, dictionary=dictionary
+        )
 
-        if not isinstance(ids, list):
-            ids = [ids]
         return self.models.execute_kw(
             self.db, self.uid, self.password, table, "write", [ids, d]
         )
@@ -204,26 +251,15 @@ class ApiConnection:
             Takes in a single Id or a list of ids
 
         """
-        if not isinstance(ids, list):
-            ids = [ids]
+        ids, _ = self.base_execute_kw_parse(ids)
+
         return self.models.execute_kw(
             self.db, self.uid, self.password, table, "unlink", [ids]
         )
 
-    def check_one_record(self, id, table=current_table):
-        """ Checks one record based on Id """
-        return self.models.execute_kw(
-            self.db,
-            self.uid,
-            self.password,
-            table,
-            "search",
-            [[["id", "=", id]]],
-        )
-
-    def auto_validate(self, ids, meth, table=current_table):
+    def run_method(self, method, args=[], kwargs={}, table=current_table):
         """ 
-        Execute the pressing of a button in odoo based upon the method used.
+        Execute a method in the table passed on an odoo server.
 
         Takes in a method to execute and then  `ids` as a list of ids (can be only 1).  
         Beginning with a list of ids followed by any arguments.
@@ -235,11 +271,11 @@ class ApiConnection:
         password, 
         table, 
         method, 
-        [[list of ids], arg1, arg2...]
+        [[list of ids], arg1, arg2...], {key: value}
         )
 
         Each call to execute_kw takes the following parameters:
-            the database to use, a string
+            the dbase to use, a string
             the user id (retrieved through authenticate), an integer
             the user’s password, a string
             the model name, a string
@@ -248,68 +284,32 @@ class ApiConnection:
             a mapping/dict of parameters to pass by keyword (optional)
 
         """
-        # if not isinstance(ids, list):
-        #     ids = [ids]
         return self.models.execute_kw(
-            self.db, self.uid, self.password, table, meth, ids
+            self.db, self.uid, self.password, table, method, args, kwargs
         )
 
-def pprint_res(d, field=None):
-    """ 
-        Takes in a list of dictionaries (d) 
-        pretty prints the results to the terminal
-    """
-    for x in d:
-        print()
-        print("-" * 100)
-        try:
-            if field:
-                print(x[field])
-            else:
-                for k, v in x.items():
-                    print(f"\n\t{k}  ::  {v}")
-        except (KeyError, IndexError):
-            print("Nothing to display")
-            pass
-    print()
-    print("-" * 100)
-    print()
+    # def ex_sql(self, query=False, queries=False):
+    #     # create a server-side method to run sql.. 
+    #     return self.run_method(
+    #         "run_query",
+    #         args=[[]],
+    #         kwargs={"query": query, "queries": queries},
+    #         table="tools.sql",
+    #     )
 
-def login_auth(db=db, username=username, password=password):
-    """ function to log into Odoo.
-        **kw to override username, password and db
-    """
-    url = f"https://{db}.dev.odoo.com"
+    def gen_select(self, fields, table, where=''): 
+        query = f"SELECT {fields} FROM {table.replace('.', '_')} {where};"
+        print(query)
+        return query
 
-    ac = ApiConnection(url, db, username, password)
+    def gen_update(self, field, value, table, where=''):
+        query = f"UPDATE {table.replace('.', '_')} SET {field}='{value}' {where};"
+        print(query)
+        return query        
 
-    try:
-        # AUTH AND RETURN ID
-        uid = ac.auth_user()
-        print(
-            f"\n\n\tid  ::  ({uid})  {username}  ::  {db}  ::  LOGIN SUCCESSSFUL!!\n\n"
-        )
-        return ac
-    except ProtocolError as e:
-        print(e)
+    def gen_delete(self, field, value, table, where=''):
+        query = f"DELETE FROM {table.replace('.', '_')} {where};"
+        print(query)
+        return query        
 
-def get_ac(db=None):
-    """ returns a connection object from the required database, defaults to master if no other database is passed """
-    return login_auth(
-        db=db if db else db_name, username=username, password=password
-    )
 
-if __name__ == '__main__':
-    ac = get_ac()
-
-    ml = ac.search_and_read(
-        [
-            [
-                'id', '=', 396
-            ],
-        ],
-    table="res.partner",
-    fields=['name', 'email', 'phone']
-    )
-
-    pprint_res(ml)
