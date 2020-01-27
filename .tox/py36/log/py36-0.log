@@ -1,8 +1,0 @@
-action: py36, msg: getenv
-cwd: C:\Users\John\Documents\GIT\odoo-external-api\.tox
-cmd: 'c:\users\john\appdata\local\programs\python\python36\python.exe' -m virtualenv --no-download --python 'c:\users\john\appdata\local\programs\python\python36\python.exe' py36
-Already using interpreter c:\users\john\appdata\local\programs\python\python36\python.exe
-Using base prefix 'c:\\users\\john\\appdata\\local\\programs\\python\\python36'
-New python executable in C:\Users\John\Documents\GIT\odoo-external-api\.tox\py36\Scripts\python.exe
-Installing setuptools, pip, wheel...
-done.
