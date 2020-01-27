@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="Odoo Base API",
+    author='John Ashurst',
     version="2019.1.3",
     description="Odoo XML RPC API Base Class",
     packages=find_packages(),
