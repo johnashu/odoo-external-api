@@ -20,18 +20,10 @@ current_table = "stock.production.lot"
 # 'mrp.workorder'
 # res.partner'
 # 'purchase.order'
-
-
-URL = "https://products.intermodaltelematics.com/?id={}"
-current_table = "stock.production.lot"
-
 # 'product.product'
-# 'sale.order.line'
-# 'sale.order'
-# 'mrp.production'
-# 'mrp.workorder'
-# res.partner'
-# 'purchase.order'
+# 'product.template'
+
+current_table = "stock.production.lot"
 
 
 class OdooBaseApi:
