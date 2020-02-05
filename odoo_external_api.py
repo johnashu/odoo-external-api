@@ -10,6 +10,7 @@ log.basicConfig(format="%(message)s", level=log.INFO)
 #     password,
 # )
 
+
 current_table = "stock.production.lot"
 
 # 'product.product'
