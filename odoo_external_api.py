@@ -1,4 +1,3 @@
-import sys
 from xmlrpc.client import ServerProxy, ProtocolError, Error
 import logging as log
 
