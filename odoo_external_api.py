@@ -1,14 +1,14 @@
-from xmlrpc.client import ServerProxy, ProtocolError, Error
+from xmlrpc.client import ServerProxy
 import logging as log
 
 log.basicConfig(format="%(message)s", level=log.INFO)
 
-from includes.config import (
-    url,
-    db,
-    username,
-    password,
-)
+# from includes.config import (
+#     url,
+#     db,
+#     username,
+#     password,
+# )
 
 current_table = "stock.production.lot"
 
