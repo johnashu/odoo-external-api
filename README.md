@@ -3,7 +3,7 @@
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/johnashu/odoo-external-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/johnashu/odoo-external-api/context:python)
 
 An Abstract Base Class to inherit from and interact with Odoos external XML-RPC API
-
+ 
 Example Inheritance:
 
     from odoo_base_api import OdooBaseApi, username, password, url, db
