@@ -11,8 +11,6 @@ log.basicConfig(format="%(message)s", level=log.INFO)
 # )
 
 
-current_table = "stock.production.lot"
-
 # 'product.product'
 # 'sale.order.line'
 # 'sale.order'
