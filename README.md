@@ -8,7 +8,7 @@ Example Inheritance:
 
     from odoo_base_api import OdooBaseApi, username, password, url, db
 
-    class StockProductionLot(OdooProductionApi):
+    class StockProductionLot(OdooBaseApi):
         """ Class to handle stock.production.lot """
 
         def create_products(self, codes, product_id=9999):
