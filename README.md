@@ -5,7 +5,7 @@
 An Abstract Base Class to inherit from and interact with Odoos external XML-RPC API
  
 Example Inheritance:
-
+```python
     from odoo_base_api import OdooBaseApi, username, password, url, db
 
     class StockProductionLot(OdooBaseApi):
@@ -33,6 +33,7 @@ Example Inheritance:
 
     if __name__ == "__main__":
         spl = StockProductionLot(url, db, username, password, table='stock.production.lot')
+```
 
 Further Abstractions can be useful if method count is high in the main table class or for encapsulating complex alogirthms:
     
