@@ -6,60 +6,62 @@ An Abstract Base Class to inherit from and interact with Odoos external XML-RPC 
  
 Example Inheritance:
 ```python
-    from odoo_base_api import OdooBaseApi, username, password, url, db
+from odoo_base_api import OdooBaseApi, username, password, url, db
 
-    class StockProductionLot(OdooBaseApi):
-        """ Class to handle stock.production.lot """
+class StockProductionLot(OdooBaseApi):
+    """ Class to handle stock.production.lot """
 
-        def create_products(self, codes, product_id=9999):
+    def create_products(self, codes, product_id=9999):
 
-            lots = {}
+        lots = {}
 
-            for code in codes:
-                lot = self.create_record(
-                    table="stock.production.lot",
-                    dictionary={
-                        "name": code,
-                        "product_id": product_id,
-                        "product_qty": 0.0,
-                        "product_uom_id": 1,
-                        "company_id": 1,
-                    },
-                )
+        for code in codes:
+            lot = self.create_record(
+                table="stock.production.lot",
+                dictionary={
+                    "name": code,
+                    "product_id": product_id,
+                    "product_qty": 0.0,
+                    "product_uom_id": 1,
+                    "company_id": 1,
+                },
+            )
 
-                lots[code] = lot
+            lots[code] = lot
 
-            return lots
+        return lots
 
-    if __name__ == "__main__":
-        spl = StockProductionLot(url, db, username, password, table='stock.production.lot')
+if __name__ == "__main__":
+    spl = StockProductionLot(url, db, username, password, table='stock.production.lot')
 ```
 
 Further Abstractions can be useful if method count is high in the main table class or for encapsulating complex alogirthms:
-    
-    from stock_move_line import StockMoveLine, username, password, db, url
+```python    
+from stock_move_line import StockMoveLine, username, password, db, url
 
-    class CheckStockQuantity(StockMoveLine):
-        ...
+class CheckStockQuantity(StockMoveLine):
+    ...
 
-    from stock_production_lot import StockProductionLot, username, password, db, url
+from stock_production_lot import StockProductionLot, username, password, db, url
 
-    class ChangeLabels(StockProductionLot):
-        ...
+class ChangeLabels(StockProductionLot):
+    ...
+```
 
 You can also invoke multiple inheritence to marry 2 tables methods together and take advantage of unique situations.
+```python
+from mrp_production import MrpProduction, username, password, db, url
+from mrp_workorder import Workorders
 
-    from mrp_production import MrpProduction, username, password, db, url
-    from mrp_workorder import Workorders
 
+class CleanMo(Workorders, MrpProduction):
+    pass
 
-    class CleanMo(Workorders, MrpProduction):
-        pass
-
-    mod = CleanMo(url, db, username, password)
-    mod.change_workorder_state(mo_ids, "cancel")
-    mo_names, mo_ids = mod.mark_as_cancelled_from_mo(mo_names)
-    mod.delete_cancelled()
+mod = CleanMo(url, db, username, password)
+mod.change_workorder_state(mo_ids, "cancel")
+mo_names, mo_ids = mod.mark_as_cancelled_from_mo(mo_names)
+mod.delete_cancelled()
+```
 
 
 
